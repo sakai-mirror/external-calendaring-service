@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.tool.api.SessionManager;
 
 /**
@@ -30,7 +31,19 @@ public class SakaiProxyImpl implements SakaiProxy {
 		return securityService.isSuperUser();
 	}
 	
+	/**
+ 	* {@inheritDoc}
+ 	*/
+	public String getServerName() {
+		return serverConfigurationService.getServerName();
+	}
 	
+	/**
+ 	* {@inheritDoc}
+ 	*/
+	public String getCalendarFilePath() {
+		return serverConfigurationService.getString("calendar.path", "/tmp/");
+	}
 	
 	
 	/**
@@ -47,4 +60,7 @@ public class SakaiProxyImpl implements SakaiProxy {
 	@Resource(name="org.sakaiproject.authz.api.SecurityService")
 	private SecurityService securityService;
 	
+	@Resource(name="org.sakaiproject.component.api.ServerConfigurationService")
+	private ServerConfigurationService serverConfigurationService;
+
 }

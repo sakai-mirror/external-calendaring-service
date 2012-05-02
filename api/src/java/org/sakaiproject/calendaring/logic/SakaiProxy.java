@@ -20,4 +20,15 @@ public interface SakaiProxy {
 	 */
 	public boolean isSuperUser();
 	
+	/**
+	 * Get the name of the server
+	 * @return
+	 */
+	public String getServerName();
+	
+	/**
+	 * Get the configured calendar file path on the server. This is where the ICS files are created. Must have trailing slash.
+	 * @return
+	 */
+	public String getCalendarFilePath();
 }

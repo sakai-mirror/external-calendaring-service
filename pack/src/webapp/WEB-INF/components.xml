@@ -4,8 +4,8 @@
 <beans>
 
 	<!-- ExternalCalendaringService -->
-	<bean id="org.sakaiproject.calendaring.service.ExternalCalendaringService"
-    	class="org.sakaiproject.calendaring.service.ExternalCalendaringServiceImpl"
+	<bean id="org.sakaiproject.calendaring.api.ExternalCalendaringService"
+    	class="org.sakaiproject.calendaring.api.ExternalCalendaringServiceImpl"
     	init-method="init" />
 
 	<!--  SakaiProxy -->
