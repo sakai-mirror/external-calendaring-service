@@ -1,7 +1,8 @@
 package org.sakaiproject.calendaring.api;
 
-import java.io.File;
 import java.util.List;
+
+import net.fortuna.ical4j.model.Calendar;
 
 import org.sakaiproject.calendar.api.CalendarEvent;
 import org.sakaiproject.user.api.User;
@@ -17,20 +18,27 @@ import org.sakaiproject.user.api.User;
 public interface ExternalCalendaringService {
 
 	/**
-	 * Creates an ICS file for a CalendarEvent.
+	 * Creates an iCal calendar for a Sakai CalendarEvent.
 	 * 
-	 * @return File, the ICS file for the given event or null if there was an error
+	 * @param event Sakai CalendarEvent
+	 * @return the Calendar for the given event or null if there was an error
 	 */
-	public File createEvent(CalendarEvent event);
+	public Calendar createEvent(CalendarEvent event);
 	
 	/**
-	 * Creates an ICS file for a CalendarEvent with the given attendees
+	 * Creates an iCal calendar for a Sakai CalendarEvenT with the given attendees
 	 * 
-	 * @return File, the ICS file for the given event or null if there was an error
+	 * @param event Sakai CalendarEvent
+	 * @param attendees list of Users that have been invited to hte event
+	 * @return the Calendar for the given event or null if there was an error
 	 */
-	public File createEvent(CalendarEvent event, List<User> attendees);
+	public Calendar createEvent(CalendarEvent event, List<User> attendees);
 	
-	//TODO THIS NEEDS TO RETURN SOMETHING ELSE, NOT A FILE... maybe the calendar object itself?
-	//or maybe provide a way to 'finalise' the calendar which writes it out to the file?
 	
+	/**
+	 * Write an iCal calendar out to a file in the filesystem.
+	 * @param calendar iCal calendar object
+	 * @return the path to the file
+	 */
+	public String toFile(Calendar calendar);
 }

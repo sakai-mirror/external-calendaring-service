@@ -3,13 +3,17 @@ package org.sakaiproject.calendaring.api;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.annotation.Resource;
 
 import lombok.extern.apachecommons.CommonsLog;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.Property;
+import net.fortuna.ical4j.model.ValidationException;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Version;
@@ -17,6 +21,7 @@ import net.fortuna.ical4j.model.property.Version;
 import org.sakaiproject.calendar.api.CalendarEvent;
 import org.sakaiproject.calendaring.logic.SakaiProxy;
 import org.sakaiproject.time.api.TimeRange;
+import org.sakaiproject.user.api.User;
 
 /**
  * Implementation of {@link ExternalCalendaringService}
@@ -30,7 +35,7 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	/**
 	 * {@inheritDoc}
 	 */
-	public File createEvent(CalendarEvent event) {
+	public Calendar createEvent(CalendarEvent event) {
 
 		String serverName = sakaiProxy.getServerName();
 		
@@ -65,23 +70,52 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		
 		System.out.println(calendar);
 		
-		/*
+		return calendar;
+		
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public Calendar createEvent(CalendarEvent event, List<User> attendees) {
+		
+		Calendar calendar = createEvent(event);
+		
+		//add attendees
+		
+		return calendar;
+		
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public String toFile(Calendar calendar) {
+		
+		String path = generateFilePath(getUid(calendar));
+		
 		FileOutputStream fout;
 		try {
-			fout = new FileOutputStream(generateFilePath(event.getId()));
+			fout = new FileOutputStream(path);
+		
+			CalendarOutputter outputter = new CalendarOutputter();
+			outputter.output(calendar, fout);
+		
+			fout.flush();
+			fout.close();
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ValidationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		CalendarOutputter outputter = new CalendarOutputter();
-		outputter.output(calendar, fout);
+		return path;
 		
-		fout.flush();
-		fout.close();
-		*/
-		
-		return new File("bb");
 	}
 	
 	/**
@@ -118,6 +152,16 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		sb.append(eventUid);
 		sb.append(".ics");
 		return sb.toString();
+	}
+	
+	/**
+	 * Helper to get the UID of a Calendar
+	 * @param c	Caledar
+	 * @return
+	 */
+	private String getUid(Calendar c) {
+		Property p = c.getProperty(Property.UID);
+		return p.getValue();
 	}
 	
 	
