@@ -1,4 +1,4 @@
-package org.sakaiproject.calendaring;
+package org.sakaiproject.calendaring.mocks;
 
 import java.util.Collection;
 import java.util.List;

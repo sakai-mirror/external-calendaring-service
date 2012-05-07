@@ -7,8 +7,7 @@ import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.annotation.Resource;
-
+import lombok.Setter;
 import lombok.extern.apachecommons.CommonsLog;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
@@ -22,6 +21,8 @@ import org.sakaiproject.calendar.api.CalendarEvent;
 import org.sakaiproject.calendaring.logic.SakaiProxy;
 import org.sakaiproject.time.api.TimeRange;
 import org.sakaiproject.user.api.User;
+
+
 
 /**
  * Implementation of {@link ExternalCalendaringService}
@@ -37,36 +38,21 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	 */
 	public Calendar createEvent(CalendarEvent event) {
 
-		String serverName = sakaiProxy.getServerName();
+		//String serverName = sakaiProxy.getServerName();
 		
 		//setup
 		Calendar calendar = new Calendar();
-		calendar.getProperties().add(new ProdId("-//"+serverName+"//iCal4j 1.0//EN"));
+		//calendar.getProperties().add(new ProdId("-//"+serverName+"//iCal4j 1.0//EN"));
 		calendar.getProperties().add(Version.VERSION_2_0);
 		calendar.getProperties().add(CalScale.GREGORIAN);
 
 		//add uid
-		calendar.getProperties().add(event.getId());
+		//calendar.getProperties().add(event.getId());
 
 		//handle all day event?
 		
 		//handle ranged event
 
-		/**
-		 
-		TimeService timeService = getSakaiFacade().getTimeService();
-		Time start = timeService.newTime(startTime.getTime());
-		Time end = timeService.newTime(endTime.getTime());
-		TimeRange timeRange = timeService.newTimeRange(start, end, true, false);
-		eventEdit.setRange(timeRange);
-
-		String desc = meeting.getDescription();
-		eventEdit.setDescription(PlainTextFormat.convertFormattedHtmlTextToPlaintext(desc));
-		eventEdit.setLocation(meeting.getLocation());
-		eventEdit.setDisplayName(meeting.getTitle() + title_suffix);
-		eventEdit.setRange(timeRange);
-		 
-		 */
 		
 		System.out.println(calendar);
 		
@@ -172,7 +158,7 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		log.info("init");
 	}
 	
-	@Resource(name="org.sakaiproject.calendaring.logic.SakaiProxy")
+	@Setter
 	private SakaiProxy sakaiProxy;
 	
 }

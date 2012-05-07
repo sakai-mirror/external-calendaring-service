@@ -1,4 +1,4 @@
-package org.sakaiproject.calendaring;
+package org.sakaiproject.calendaring.mocks;
 
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.api.TimeRange;

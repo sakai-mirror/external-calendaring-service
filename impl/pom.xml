@@ -67,13 +67,17 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-        <dependency>
+       <!--  <dependency>
         	<groupId>org.mockito</groupId>
   			<artifactId>mockito-all</artifactId>
-    	</dependency>
+    	</dependency> -->
     	<dependency>
     		<groupId>org.sakaiproject.mock</groupId>
     		<artifactId>sakai-mock</artifactId>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.springframework</groupId>
+    		<artifactId>spring-test</artifactId>
     	</dependency>
         
         
@@ -106,9 +110,9 @@
         </plugins>
         <testResources>
             <testResource>
-                <directory>${basedir}/../pack/src/webapp/WEB-INF</directory>
+                <directory>${basedir}/src/test</directory>
                 <includes>
-                    <include>components.xml</include>
+                    <include>test-components.xml</include>
                 </includes>
             </testResource>
         </testResources>
