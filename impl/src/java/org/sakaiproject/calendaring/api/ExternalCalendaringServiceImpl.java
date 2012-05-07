@@ -15,7 +15,9 @@ import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.ValidationException;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.ProdId;
+import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
+import net.fortuna.ical4j.util.UidGenerator;
 
 import org.sakaiproject.calendar.api.CalendarEvent;
 import org.sakaiproject.calendaring.logic.SakaiProxy;
@@ -47,6 +49,8 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		calendar.getProperties().add(CalScale.GREGORIAN);
 
 		//add uid
+		calendar.getProperties().add(new Uid(event.getId()));
+
 		//calendar.getProperties().add(event.getId());
 
 		//handle all day event?
