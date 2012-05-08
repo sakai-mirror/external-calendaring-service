@@ -1,7 +1,15 @@
 package org.sakaiproject.calendaring;
 
 import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.annotation.Resource;
+
+import net.fortuna.ical4j.model.parameter.Cn;
+import net.fortuna.ical4j.model.parameter.Role;
+import net.fortuna.ical4j.model.property.Attendee;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Version;
 
@@ -11,11 +19,16 @@ import org.junit.runner.RunWith;
 import org.sakaiproject.calendar.api.CalendarEvent;
 import org.sakaiproject.calendar.api.CalendarEventEdit;
 import org.sakaiproject.calendaring.api.ExternalCalendaringServiceImpl;
+import org.sakaiproject.calendaring.logic.SakaiProxy;
 import org.sakaiproject.calendaring.mocks.MockCalendarEventEdit;
 import org.sakaiproject.calendaring.mocks.MockTimeService;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.api.TimeRange;
 import org.sakaiproject.time.api.TimeService;
+import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.api.UserAlreadyDefinedException;
+import org.sakaiproject.user.api.UserIdInvalidException;
+import org.sakaiproject.user.api.UserPermissionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -94,10 +107,8 @@ public class ExternalCalendaringServiceTest {
 		
 		CalendarEvent event = generateEvent1();
 		
-		net.fortuna.ical4j.model.Calendar calendar = service.createEvent(event);
+		net.fortuna.ical4j.model.Calendar calendar = service.createEvent(event, generateUsers());
 		
-		//TODO need helper method to generate this for us.
-		//List<User> users = new ArrayList<User>();
 	
 		//TODO more checks
 	}
@@ -146,7 +157,23 @@ public class ExternalCalendaringServiceTest {
 		return edit;
 	}
 	
+	/**
+	 * Helper to generate a list of users. NOT A TEST METHOD
+	 * @return
+	 * @throws UserPermissionException 
+	 * @throws UserAlreadyDefinedException 
+	 * @throws UserIdInvalidException 
+	 */
+	private List<User> generateUsers(){
+		List<User> users = new ArrayList<User>();
+		
+		for(int i=0;i<5;i++) {
+			
+			//use mock sakaiproxy for this
+		
+		}
+		
+		return users;
+	}
 	
-	
-
 }
