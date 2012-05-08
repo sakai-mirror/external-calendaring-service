@@ -150,6 +150,10 @@ public class MockCalendarEventEdit implements CalendarEventEdit {
 	public void setModifiedBy() {		
 	}
 
+	/* special */
+	public void setId(String uuid) {
+		this.id=uuid;
+	}
 
 
 }

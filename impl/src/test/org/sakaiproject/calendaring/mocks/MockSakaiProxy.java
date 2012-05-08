@@ -4,6 +4,7 @@ import org.sakaiproject.calendaring.logic.SakaiProxy;
 
 /**
  * Mock of SakaiProxy so we can call the main service API
+ * 
  * @author Steve Swinsburg (steve.swinsburg@gmail.com)
  *
  */

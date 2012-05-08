@@ -1,8 +1,9 @@
 package org.sakaiproject.calendaring;
 
-import org.junit.Assert;
+import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Version;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sakaiproject.calendar.api.CalendarEvent;
@@ -31,21 +32,21 @@ public class ExternalCalendaringServiceTest {
 	private final String EVENT_NAME = "A new event";
 	private final String LOCATION = "Building 1";
 	private final String DESCRIPTION = "This is a sample event.";
+	private final String UID = "bcb78c02-a738-4224-8e58-c5efed519e00";
 	private final long START_TIME = 1336136400; // 4/May/2012 13:00 GMT
 	private final long END_TIME = 1336140000; // 4/May/2012 14:00 GMT
 
-	ExternalCalendaringServiceImpl service = new ExternalCalendaringServiceImpl();
+	@Autowired
+	private ExternalCalendaringServiceImpl service;
 	
 	@Autowired
 	private ApplicationContext applicationContext;
-	
 
 	@Test
 	public void testContext() {
 		Assert.assertNotNull(applicationContext.getBean("org.sakaiproject.calendaring.logic.SakaiProxy"));
 		Assert.assertNotNull(applicationContext.getBean("org.sakaiproject.calendaring.api.ExternalCalendaringService"));
 	}
-	
 	
 	/**
 	 * Ensure the event generation works and returns a usable object. Internal test method, but useful.
@@ -61,6 +62,7 @@ public class ExternalCalendaringServiceTest {
 		Assert.assertEquals(LOCATION, event.getLocation());
 		Assert.assertEquals(DESCRIPTION, event.getDescription());
 		Assert.assertEquals(EVENT_NAME, event.getDisplayName());
+		Assert.assertEquals(UID, event.getId());
 		
 	}
 
@@ -78,8 +80,9 @@ public class ExternalCalendaringServiceTest {
 		
 		//check attributes of the ical4j calendar are what we expect and match those in the event
 		Assert.assertEquals(Version.VERSION_2_0, calendar.getVersion());
-		
-		//todo more checks
+		Assert.assertEquals(CalScale.GREGORIAN, calendar.getCalendarScale());
+	
+		//TODO more checks
 	}
 	
 	
@@ -89,11 +92,12 @@ public class ExternalCalendaringServiceTest {
 	 */
 	private CalendarEvent generateEvent1() {
 		
-		CalendarEventEdit edit = new MockCalendarEventEdit();
+		MockCalendarEventEdit edit = new MockCalendarEventEdit();
 		
 		edit.setDisplayName(EVENT_NAME);
 		edit.setLocation(LOCATION);
 		edit.setDescription(DESCRIPTION);
+		edit.setId(UID);
 
 		TimeService timeService = new MockTimeService();
 		Time start = timeService.newTime(START_TIME);
