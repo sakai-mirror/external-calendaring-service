@@ -26,7 +26,7 @@ public interface ExternalCalendaringService {
 	public Calendar createEvent(CalendarEvent event);
 	
 	/**
-	 * Creates an iCal calendar for a Sakai CalendarEvenT with the given attendees
+	 * Creates an iCal calendar for a Sakai CalendarEvent with the given attendees
 	 * 
 	 * @param event Sakai CalendarEvent
 	 * @param attendees list of Users that have been invited to hte event

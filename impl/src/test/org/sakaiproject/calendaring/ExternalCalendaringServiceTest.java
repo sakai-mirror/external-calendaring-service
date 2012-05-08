@@ -1,5 +1,7 @@
 package org.sakaiproject.calendaring;
 
+import java.io.File;
+
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Version;
 
@@ -33,6 +35,7 @@ public class ExternalCalendaringServiceTest {
 	private final String LOCATION = "Building 1";
 	private final String DESCRIPTION = "This is a sample event.";
 	private final String UID = "bcb78c02-a738-4224-8e58-c5efed519e00";
+	private final String CREATOR="steve";
 	private final long START_TIME = 1336136400; // 4/May/2012 13:00 GMT
 	private final long END_TIME = 1336140000; // 4/May/2012 14:00 GMT
 
@@ -63,6 +66,7 @@ public class ExternalCalendaringServiceTest {
 		Assert.assertEquals(DESCRIPTION, event.getDescription());
 		Assert.assertEquals(EVENT_NAME, event.getDisplayName());
 		Assert.assertEquals(UID, event.getId());
+		Assert.assertEquals(CREATOR, event.getCreator());
 		
 	}
 
@@ -85,6 +89,35 @@ public class ExternalCalendaringServiceTest {
 		//TODO more checks
 	}
 	
+	@Test
+	public void testGeneratingCalendarWithAttendees() {
+		
+		CalendarEvent event = generateEvent1();
+		
+		net.fortuna.ical4j.model.Calendar calendar = service.createEvent(event);
+		
+		//TODO need helper method to generate this for us.
+		//List<User> users = new ArrayList<User>();
+	
+		//TODO more checks
+	}
+	
+	@Test
+	public void testCreatingFile() {
+		
+		CalendarEvent event = generateEvent1();
+		
+		net.fortuna.ical4j.model.Calendar calendar = service.createEvent(event);
+		
+		String path = service.toFile(calendar);
+		Assert.assertNotNull(path);
+		
+		//now see if the file actually exists
+		File f = new File(path);
+		Assert.assertTrue(f.exists());
+		
+		
+	}
 	
 	/**
 	 * Helper to generate an event. NOT A TEST METHOD
@@ -98,6 +131,7 @@ public class ExternalCalendaringServiceTest {
 		edit.setLocation(LOCATION);
 		edit.setDescription(DESCRIPTION);
 		edit.setId(UID);
+		edit.setCreator(CREATOR);
 
 		TimeService timeService = new MockTimeService();
 		Time start = timeService.newTime(START_TIME);

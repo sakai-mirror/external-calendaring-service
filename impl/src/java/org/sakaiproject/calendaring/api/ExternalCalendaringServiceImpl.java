@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -16,7 +17,11 @@ import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.ValidationException;
 import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.parameter.Cn;
+import net.fortuna.ical4j.model.parameter.Role;
+import net.fortuna.ical4j.model.property.Attendee;
 import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.Description;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
@@ -54,12 +59,18 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		calendar.getProperties().add(new Uid(event.getId()));
 		
 		//add description
+		calendar.getProperties().add(new Description(event.getDescription()));
+		
+		//add organiser/creator
+		//TODO FIX THIS SO IT IS AN EMAIL ADDRESS AND PROPER NAME
+		Attendee creator = new Attendee(URI.create("mailto:" + event.getCreator()));
+		creator.getParameters().add(Role.CHAIR);
+		creator.getParameters().add(new Cn("steve swinsburg"));
+		calendar.getProperties().add(creator);
 
 		//start and end date
 		DateTime start = new DateTime(getStartDate(event.getRange()).getTime());
 		DateTime end = new DateTime(getEndDate(event.getRange()).getTime());
-		
-		
 		
 		//create meeting
 		VEvent meeting = new VEvent(start, end, event.getDisplayName());
@@ -78,7 +89,13 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		
 		Calendar calendar = createEvent(event);
 		
-		//add attendees
+		for(User u: attendees) {
+			Attendee a = new Attendee(URI.create("mailto:" + u.getEmail()));
+			a.getParameters().add(Role.REQ_PARTICIPANT);
+			a.getParameters().add(new Cn(u.getDisplayName()));
+			
+			calendar.getProperties().add(a);
+		}
 		
 		return calendar;
 		
