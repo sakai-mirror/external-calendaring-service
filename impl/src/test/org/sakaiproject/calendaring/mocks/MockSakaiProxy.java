@@ -31,4 +31,14 @@ public class MockSakaiProxy implements SakaiProxy {
 		return "/tmp";
 	}
 
+	@Override
+	public String getUserEmail(String uuid) {
+		return uuid + "@email.com";
+	}
+
+	@Override
+	public String getUserDisplayName(String uuid) {
+		return "User " + uuid;
+	}
+
 }

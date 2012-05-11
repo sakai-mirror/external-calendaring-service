@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -15,14 +16,20 @@ import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Property;
+import net.fortuna.ical4j.model.TimeZone;
+import net.fortuna.ical4j.model.TimeZoneRegistry;
+import net.fortuna.ical4j.model.TimeZoneRegistryFactory;
 import net.fortuna.ical4j.model.ValidationException;
 import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.component.VTimeZone;
 import net.fortuna.ical4j.model.parameter.Cn;
 import net.fortuna.ical4j.model.parameter.Role;
 import net.fortuna.ical4j.model.property.Attendee;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Description;
+import net.fortuna.ical4j.model.property.Location;
 import net.fortuna.ical4j.model.property.ProdId;
+import net.fortuna.ical4j.model.property.Summary;
 import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
 
@@ -46,56 +53,35 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	 * {@inheritDoc}
 	 */
 	public Calendar createEvent(CalendarEvent event) {
-
-		String serverName = sakaiProxy.getServerName();
-		
-		//setup
-		Calendar calendar = new Calendar();
-		calendar.getProperties().add(new ProdId("-//"+serverName+"//iCal4j 1.0//EN"));
-		calendar.getProperties().add(Version.VERSION_2_0);
-		calendar.getProperties().add(CalScale.GREGORIAN);
-
-		//add uid
-		calendar.getProperties().add(new Uid(event.getId()));
-		
-		//add description
-		calendar.getProperties().add(new Description(event.getDescription()));
-		
-		//add organiser/creator
-		//TODO FIX THIS SO IT IS AN EMAIL ADDRESS AND PROPER NAME
-		Attendee creator = new Attendee(URI.create("mailto:" + event.getCreator()));
-		creator.getParameters().add(Role.CHAIR);
-		creator.getParameters().add(new Cn("steve swinsburg"));
-		calendar.getProperties().add(creator);
-
-		//start and end date
-		DateTime start = new DateTime(getStartDate(event.getRange()).getTime());
-		DateTime end = new DateTime(getEndDate(event.getRange()).getTime());
-		
-		//create meeting
-		VEvent meeting = new VEvent(start, end, event.getDisplayName());
-		
-		calendar.getComponents().add(meeting);
-
-		System.out.println(calendar);
-		
-		return calendar;
+		return createEvent(event, null);
 	}
+	
+	
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	public Calendar createEvent(CalendarEvent event, List<User> attendees) {
 		
-		Calendar calendar = createEvent(event);
+		//setup calendar
+		Calendar calendar = setupCalendar();
 		
-		for(User u: attendees) {
-			Attendee a = new Attendee(URI.create("mailto:" + u.getEmail()));
-			a.getParameters().add(Role.REQ_PARTICIPANT);
-			a.getParameters().add(new Cn(u.getDisplayName()));
+		//setup vevent
+		VEvent vevent = setupEvent(event, attendees);
 			
-			calendar.getProperties().add(a);
+		//add vevent to meeting
+		calendar.getComponents().add(vevent);
+		
+		//validate
+		try {
+			calendar.validate(true);
+		} catch (ValidationException e) {
+			e.printStackTrace();
+			return null;
 		}
+		
+		//log.debug("Calendar:" + calendar);
+		System.out.println("Calendar:" + calendar);
 		
 		return calendar;
 		
@@ -106,7 +92,7 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	 */
 	public String toFile(Calendar calendar) {
 		
-		String path = generateFilePath(getUid(calendar));
+		String path = generateFilePath(String.valueOf(new Date().getTime()));
 		
 		FileOutputStream fout;
 		try {
@@ -132,6 +118,77 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		
 	}
 	
+	
+	/**
+	 * Helper method to setup the standard parts of the calendar
+	 * @return
+	 */
+	private Calendar setupCalendar() {
+		
+		String serverName = sakaiProxy.getServerName();
+		
+		//setup calendar
+		Calendar calendar = new Calendar();
+		calendar.getProperties().add(new ProdId("-//"+serverName+"//iCal4j 1.0//EN"));
+		calendar.getProperties().add(Version.VERSION_2_0);
+		calendar.getProperties().add(CalScale.GREGORIAN);
+		
+		return calendar;
+	}
+	
+	/**
+	 * Helper method to setup a VEvent from a Sakai CalendarEvent
+	 * @param event
+	 * @return vevent the VEvent
+	 */
+	private VEvent setupEvent(CalendarEvent event, List<User> attendees) {
+		
+		//timezone. All dates are in GMT so we need to explicitly set that
+		TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+		TimeZone timezone = registry.getTimeZone("GMT");
+		VTimeZone tz = timezone.getVTimeZone();
+
+		//start and end date
+		DateTime start = new DateTime(getStartDate(event.getRange()).getTime());
+		DateTime end = new DateTime(getEndDate(event.getRange()).getTime());
+		
+		//create event incl title/summary
+		VEvent vevent = new VEvent(start, end, event.getDisplayName());
+			
+		//add timezone
+		vevent.getProperties().add(tz.getTimeZoneId());
+		
+		//add uid to event
+		vevent.getProperties().add(new Uid(event.getId()));
+			
+		//add description to event
+		vevent.getProperties().add(new Description(event.getDescription()));
+		
+		//add location to event
+		vevent.getProperties().add(new Location(event.getLocation()));
+		
+		//add organiser to event
+		Attendee creator = new Attendee(URI.create("mailto:" + sakaiProxy.getUserEmail(event.getCreator())));
+		creator.getParameters().add(Role.CHAIR);
+		creator.getParameters().add(new Cn(sakaiProxy.getUserDisplayName(event.getCreator())));
+		vevent.getProperties().add(creator);
+		
+		//add attendees to event with 'required participant' role
+		if(attendees != null){
+			for(User u: attendees) {
+				Attendee a = new Attendee(URI.create("mailto:" + u.getEmail()));
+				a.getParameters().add(Role.REQ_PARTICIPANT);
+				a.getParameters().add(new Cn(u.getDisplayName()));
+			
+				vevent.getProperties().add(a);
+			}
+		}
+		
+		return vevent;
+	}
+	
+	
+	
 	/**
 	 * Helper to extract the startDate of a TimeRange into a java.util.Calendar object. 
 	 * @param range 
@@ -156,26 +213,16 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	
 	/**
 	 * Helper to create the name of the ICS file we are to write
-	 * @param eventUid
+	 * @param filename
 	 * @return
 	 */
-	private String generateFilePath(String eventUid) {
+	private String generateFilePath(String filename) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(sakaiProxy.getCalendarFilePath());
 		sb.append(File.separator);
-		sb.append(eventUid);
+		sb.append(filename);
 		sb.append(".ics");
 		return sb.toString();
-	}
-	
-	/**
-	 * Helper to get the UID of a Calendar
-	 * @param c	Caledar
-	 * @return
-	 */
-	private String getUid(Calendar c) {
-		Property p = c.getProperty(Property.UID);
-		return p.getValue();
 	}
 	
 	

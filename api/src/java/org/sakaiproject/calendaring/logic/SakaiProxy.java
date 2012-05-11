@@ -31,4 +31,18 @@ public interface SakaiProxy {
 	 * @return
 	 */
 	public String getCalendarFilePath();
+	
+	/**
+	 * Get the email address for this user
+	 * @param uuid
+	 * @return
+	 */
+	public String getUserEmail(String uuid);
+	
+	/**
+	 * Get the display name for this user
+	 * @param uuid
+	 * @return
+	 */
+	public String getUserDisplayName(String uuid);
 }

@@ -7,6 +7,8 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.user.api.UserDirectoryService;
+import org.sakaiproject.user.api.UserNotDefinedException;
 
 /**
  * Implementation of our SakaiProxy API
@@ -45,6 +47,32 @@ public class SakaiProxyImpl implements SakaiProxy {
 		return serverConfigurationService.getString("calendar.path", "/tmp/");
 	}
 	
+	/**
+ 	* {@inheritDoc}
+ 	*/
+	public String getUserEmail(String uuid) {
+		String email = null;
+		try {
+			email = userDirectoryService.getUser(uuid).getEmail();
+		} catch (UserNotDefinedException e) {
+			log.warn("Cannot get email for id: " + uuid + " : " + e.getClass() + " : " + e.getMessage());
+		}
+		return email;
+	}
+	
+	/**
+ 	* {@inheritDoc}
+ 	*/
+	public String getUserDisplayName(String uuid) {
+	   String name = null;
+		try {
+			name = userDirectoryService.getUser(uuid).getDisplayName();
+		} catch (UserNotDefinedException e) {
+			log.warn("Cannot get displayname for id: " + uuid + " : " + e.getClass() + " : " + e.getMessage());
+		}
+		return name;
+	}
+	
 	
 	/**
 	 * init
@@ -62,5 +90,9 @@ public class SakaiProxyImpl implements SakaiProxy {
 	
 	@Resource(name="org.sakaiproject.component.api.ServerConfigurationService")
 	private ServerConfigurationService serverConfigurationService;
+	
+	@Resource(name="org.sakaiproject.user.api.UserDirectoryService")
+	private UserDirectoryService userDirectoryService;
+
 
 }

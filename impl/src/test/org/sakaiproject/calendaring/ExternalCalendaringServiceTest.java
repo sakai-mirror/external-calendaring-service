@@ -1,15 +1,9 @@
 package org.sakaiproject.calendaring;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-
-import net.fortuna.ical4j.model.parameter.Cn;
-import net.fortuna.ical4j.model.parameter.Role;
-import net.fortuna.ical4j.model.property.Attendee;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Version;
 
@@ -17,15 +11,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sakaiproject.calendar.api.CalendarEvent;
-import org.sakaiproject.calendar.api.CalendarEventEdit;
 import org.sakaiproject.calendaring.api.ExternalCalendaringServiceImpl;
-import org.sakaiproject.calendaring.logic.SakaiProxy;
 import org.sakaiproject.calendaring.mocks.MockCalendarEventEdit;
 import org.sakaiproject.calendaring.mocks.MockTimeService;
+import org.sakaiproject.user.api.User;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.api.TimeRange;
 import org.sakaiproject.time.api.TimeService;
-import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserAlreadyDefinedException;
 import org.sakaiproject.user.api.UserIdInvalidException;
 import org.sakaiproject.user.api.UserPermissionException;
@@ -70,7 +62,7 @@ public class ExternalCalendaringServiceTest {
 	@Test
 	public void testGeneratingEvent() {
 		
-		CalendarEvent event = generateEvent1();
+		CalendarEvent event = generateEvent();
 		
 		Assert.assertNotNull(event);
 		
@@ -89,7 +81,7 @@ public class ExternalCalendaringServiceTest {
 	@Test
 	public void testGeneratingCalendar() {
 		
-		CalendarEvent event = generateEvent1();
+		CalendarEvent event = generateEvent();
 		
 		net.fortuna.ical4j.model.Calendar calendar = service.createEvent(event);
 		
@@ -98,25 +90,29 @@ public class ExternalCalendaringServiceTest {
 		//check attributes of the ical4j calendar are what we expect and match those in the event
 		Assert.assertEquals(Version.VERSION_2_0, calendar.getVersion());
 		Assert.assertEquals(CalScale.GREGORIAN, calendar.getCalendarScale());
-	
-		//TODO more checks
+		
+		//TODO get the VEvent from the calendar and check the attributes.
+		//Assert.assertEquals(EVENT_NAME, vevent.getProperty("SUMMARY"));
+		//Assert.assertEquals(LOCATION, vevent.getProperty("LOCATION"));
 	}
 	
 	@Test
 	public void testGeneratingCalendarWithAttendees() {
 		
-		CalendarEvent event = generateEvent1();
+		CalendarEvent event = generateEvent();
 		
 		net.fortuna.ical4j.model.Calendar calendar = service.createEvent(event, generateUsers());
 		
+		Assert.assertNotNull(calendar);
 	
-		//TODO more checks
+		//TODO more checks, check attendees etc
+		
 	}
 	
 	@Test
 	public void testCreatingFile() {
 		
-		CalendarEvent event = generateEvent1();
+		CalendarEvent event = generateEvent();
 		
 		net.fortuna.ical4j.model.Calendar calendar = service.createEvent(event);
 		
@@ -134,7 +130,7 @@ public class ExternalCalendaringServiceTest {
 	 * Helper to generate an event. NOT A TEST METHOD
 	 * @return
 	 */
-	private CalendarEvent generateEvent1() {
+	private CalendarEvent generateEvent() {
 		
 		MockCalendarEventEdit edit = new MockCalendarEventEdit();
 		
@@ -169,8 +165,10 @@ public class ExternalCalendaringServiceTest {
 		
 		for(int i=0;i<5;i++) {
 			
-			//use mock sakaiproxy for this
-		
+			org.sakaiproject.mock.domain.User u = new org.sakaiproject.mock.domain.User(null, "user"+i, "user"+i, "user"+i, "user"+i+"@email.com", "User", String.valueOf(i),
+					null, null, null, null, null,null,null,null,null,null);
+			
+			users.add(u);
 		}
 		
 		return users;
