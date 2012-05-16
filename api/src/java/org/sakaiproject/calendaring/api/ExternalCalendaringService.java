@@ -41,4 +41,5 @@ public interface ExternalCalendaringService {
 	 * @return the path to the file
 	 */
 	public String toFile(Calendar calendar);
+	
 }

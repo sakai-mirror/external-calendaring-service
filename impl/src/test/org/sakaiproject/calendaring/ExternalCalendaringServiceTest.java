@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import lombok.Setter;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Version;
 
@@ -11,13 +14,14 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sakaiproject.calendar.api.CalendarEvent;
+import org.sakaiproject.calendaring.api.ExternalCalendaringService;
 import org.sakaiproject.calendaring.api.ExternalCalendaringServiceImpl;
 import org.sakaiproject.calendaring.mocks.MockCalendarEventEdit;
 import org.sakaiproject.calendaring.mocks.MockTimeService;
-import org.sakaiproject.user.api.User;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.api.TimeRange;
 import org.sakaiproject.time.api.TimeService;
+import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserAlreadyDefinedException;
 import org.sakaiproject.user.api.UserIdInvalidException;
 import org.sakaiproject.user.api.UserPermissionException;
@@ -44,8 +48,9 @@ public class ExternalCalendaringServiceTest {
 	private final long START_TIME = 1336136400; // 4/May/2012 13:00 GMT
 	private final long END_TIME = 1336140000; // 4/May/2012 14:00 GMT
 
-	@Autowired
-	private ExternalCalendaringServiceImpl service;
+	//for the test classes we can still use annotation based injection
+	@Resource(name="org.sakaiproject.calendaring.api.ExternalCalendaringService")
+	private ExternalCalendaringService service;
 	
 	@Autowired
 	private ApplicationContext applicationContext;

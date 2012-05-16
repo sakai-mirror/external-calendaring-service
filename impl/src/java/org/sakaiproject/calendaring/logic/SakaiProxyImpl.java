@@ -1,7 +1,6 @@
 package org.sakaiproject.calendaring.logic;
 
-import javax.annotation.Resource;
-
+import lombok.Setter;
 import lombok.extern.apachecommons.CommonsLog;
 
 import org.sakaiproject.authz.api.SecurityService;
@@ -81,18 +80,17 @@ public class SakaiProxyImpl implements SakaiProxy {
 		log.info("init");
 	}
 	
-	
-	@Resource(name="org.sakaiproject.tool.api.SessionManager")
+
+	@Setter
 	private SessionManager sessionManager;
 	
-	@Resource(name="org.sakaiproject.authz.api.SecurityService")
+	@Setter	
 	private SecurityService securityService;
 	
-	@Resource(name="org.sakaiproject.component.api.ServerConfigurationService")
+	@Setter
 	private ServerConfigurationService serverConfigurationService;
 	
-	@Resource(name="org.sakaiproject.user.api.UserDirectoryService")
+	@Setter
 	private UserDirectoryService userDirectoryService;
-
-
+	
 }

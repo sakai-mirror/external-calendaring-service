@@ -6,10 +6,14 @@
 	<!-- ExternalCalendaringService -->
 	<bean id="org.sakaiproject.calendaring.api.ExternalCalendaringService"
     	class="org.sakaiproject.calendaring.api.ExternalCalendaringServiceImpl"
-    	init-method="init" />
+    	init-method="init">
+    	
+    	<property name="sakaiProxy" ref="org.sakaiproject.calendaring.logic.SakaiProxy" />
+      
+    </bean>
     	
 	<!--  Mock of SakaiProxy -->
  	<bean id="org.sakaiproject.calendaring.logic.SakaiProxy"
-    	class="org.sakaiproject.calendaring.mocks.MockSakaiProxy"/>
-      
+    	class="org.sakaiproject.calendaring.mocks.MockSakaiProxy" />
+    
 </beans>
