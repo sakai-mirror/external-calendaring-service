@@ -3,6 +3,7 @@ package org.sakaiproject.calendaring.api;
 import java.util.List;
 
 import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.component.VEvent;
 
 import org.sakaiproject.calendar.api.CalendarEvent;
 import org.sakaiproject.user.api.User;
@@ -18,22 +19,31 @@ import org.sakaiproject.user.api.User;
 public interface ExternalCalendaringService {
 
 	/**
-	 * Creates an iCal calendar for a Sakai CalendarEvent.
+	 * Creates an iCal VEvent for a Sakai CalendarEvent.
+	 * This must then be turned into a Calendar before it can be turned into an ICS file.
 	 * 
 	 * @param event Sakai CalendarEvent
-	 * @return the Calendar for the given event or null if there was an error
+	 * @return the VEvent for the given event or null if there was an error
 	 */
-	public Calendar createEvent(CalendarEvent event);
+	public VEvent createEvent(CalendarEvent event);
 	
 	/**
-	 * Creates an iCal calendar for a Sakai CalendarEvent with the given attendees
+	 * Creates an iCal VEvent for a Sakai CalendarEvent with the given attendees.
+	 * This must then be turned into a Calendar before it can be turned into an ICS file.
 	 * 
 	 * @param event Sakai CalendarEvent
 	 * @param attendees list of Users that have been invited to hte event
-	 * @return the Calendar for the given event or null if there was an error
+	 * @return the VEvent for the given event or null if there was an error
 	 */
-	public Calendar createEvent(CalendarEvent event, List<User> attendees);
+	public VEvent createEvent(CalendarEvent event, List<User> attendees);
 	
+	/**
+	 * Creates an iCal calendar from a list of VEvents.
+	 * 
+	 * @param events iCal VEvents
+	 * @return the Calendar for the given events or null if there was an error
+	 */
+	public Calendar createCalendar(List<VEvent> events);
 	
 	/**
 	 * Write an iCal calendar out to a file in the filesystem.

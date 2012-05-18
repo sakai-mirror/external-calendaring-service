@@ -49,25 +49,74 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	/**
 	 * {@inheritDoc}
 	 */
-	public Calendar createEvent(CalendarEvent event) {
+	public VEvent createEvent(CalendarEvent event) {
 		return createEvent(event, null);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	public VEvent createEvent(CalendarEvent event, List<User> attendees) {
+		
+		//timezone. All dates are in GMT so we need to explicitly set that
+		TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+		TimeZone timezone = registry.getTimeZone("GMT");
+		VTimeZone tz = timezone.getVTimeZone();
+
+		//start and end date
+		DateTime start = new DateTime(getStartDate(event.getRange()).getTime());
+		DateTime end = new DateTime(getEndDate(event.getRange()).getTime());
+		
+		//create event incl title/summary
+		VEvent vevent = new VEvent(start, end, event.getDisplayName());
+			
+		//add timezone
+		vevent.getProperties().add(tz.getTimeZoneId());
+		
+		//add uid to event
+		vevent.getProperties().add(new Uid(event.getId()));
+			
+		//add description to event
+		vevent.getProperties().add(new Description(event.getDescription()));
+		
+		//add location to event
+		vevent.getProperties().add(new Location(event.getLocation()));
+		
+		//add organiser to event
+		Attendee creator = new Attendee(URI.create("mailto:" + sakaiProxy.getUserEmail(event.getCreator())));
+		creator.getParameters().add(Role.CHAIR);
+		creator.getParameters().add(new Cn(sakaiProxy.getUserDisplayName(event.getCreator())));
+		vevent.getProperties().add(creator);
+		
+		//add attendees to event with 'required participant' role
+		if(attendees != null){
+			for(User u: attendees) {
+				Attendee a = new Attendee(URI.create("mailto:" + u.getEmail()));
+				a.getParameters().add(Role.REQ_PARTICIPANT);
+				a.getParameters().add(new Cn(u.getDisplayName()));
+			
+				vevent.getProperties().add(a);
+			}
+		}
+		
+		//log.debug("VEvent:" + vevent);
+		System.out.println("VEvent:" + vevent);
+		
+		return vevent;
+	}
+
 	
 	
 	/**
 	 * {@inheritDoc}
 	 */
-	public Calendar createEvent(CalendarEvent event, List<User> attendees) {
+	public Calendar createCalendar(List<VEvent> events) {
 		
 		//setup calendar
 		Calendar calendar = setupCalendar();
-		
-		//setup vevent
-		VEvent vevent = setupEvent(event, attendees);
 			
-		//add vevent to meeting
-		calendar.getComponents().add(vevent);
+		//add vevents to calendar
+		calendar.getComponents().addAll(events);
 		
 		//validate
 		try {
@@ -133,56 +182,6 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		return calendar;
 	}
 	
-	/**
-	 * Helper method to setup a VEvent from a Sakai CalendarEvent
-	 * @param event
-	 * @return vevent the VEvent
-	 */
-	private VEvent setupEvent(CalendarEvent event, List<User> attendees) {
-		
-		//timezone. All dates are in GMT so we need to explicitly set that
-		TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
-		TimeZone timezone = registry.getTimeZone("GMT");
-		VTimeZone tz = timezone.getVTimeZone();
-
-		//start and end date
-		DateTime start = new DateTime(getStartDate(event.getRange()).getTime());
-		DateTime end = new DateTime(getEndDate(event.getRange()).getTime());
-		
-		//create event incl title/summary
-		VEvent vevent = new VEvent(start, end, event.getDisplayName());
-			
-		//add timezone
-		vevent.getProperties().add(tz.getTimeZoneId());
-		
-		//add uid to event
-		vevent.getProperties().add(new Uid(event.getId()));
-			
-		//add description to event
-		vevent.getProperties().add(new Description(event.getDescription()));
-		
-		//add location to event
-		vevent.getProperties().add(new Location(event.getLocation()));
-		
-		//add organiser to event
-		Attendee creator = new Attendee(URI.create("mailto:" + sakaiProxy.getUserEmail(event.getCreator())));
-		creator.getParameters().add(Role.CHAIR);
-		creator.getParameters().add(new Cn(sakaiProxy.getUserDisplayName(event.getCreator())));
-		vevent.getProperties().add(creator);
-		
-		//add attendees to event with 'required participant' role
-		if(attendees != null){
-			for(User u: attendees) {
-				Attendee a = new Attendee(URI.create("mailto:" + u.getEmail()));
-				a.getParameters().add(Role.REQ_PARTICIPANT);
-				a.getParameters().add(new Cn(u.getDisplayName()));
-			
-				vevent.getProperties().add(a);
-			}
-		}
-		
-		return vevent;
-	}
 	
 	
 	
