@@ -13,11 +13,13 @@ import lombok.Setter;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Version;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sakaiproject.calendar.api.CalendarEvent;
+import org.sakaiproject.calendar.api.CalendarEventEdit;
 import org.sakaiproject.calendaring.api.ExternalCalendaringService;
 import org.sakaiproject.calendaring.api.ExternalCalendaringServiceImpl;
 import org.sakaiproject.calendaring.mocks.MockCalendarEventEdit;
@@ -105,6 +107,30 @@ public class ExternalCalendaringServiceTest {
 		net.fortuna.ical4j.model.component.VEvent vevent = service.createEvent(event);
 		
 		Assert.assertNotNull(vevent);
+		
+		//TODO check the attributes of the vevent
+		//Assert.assertEquals(EVENT_NAME, vevent.getProperty("SUMMARY"));
+		//Assert.assertEquals(LOCATION, vevent.getProperty("LOCATION"));
+		
+	}
+	
+	@Test
+	public void testGeneratingVEventWithOverridenUuid() {
+		
+		//generate new event
+		CalendarEventEdit event = generateEvent();
+		
+		//set the field that overrides the uuid
+		event.setField("vevent_uuid", "XXX");
+		
+		//create vevent
+		net.fortuna.ical4j.model.component.VEvent vevent = service.createEvent(event);
+		
+		Assert.assertNotNull(vevent);
+		
+		//should be equal to show it has been overriden
+		Assert.assertEquals("XXX", vevent.getUid().getValue());
+		
 		
 		//TODO check the attributes of the vevent
 		//Assert.assertEquals(EVENT_NAME, vevent.getProperty("SUMMARY"));
@@ -207,7 +233,7 @@ public class ExternalCalendaringServiceTest {
 	 * Helper to generate an event. NOT A TEST METHOD
 	 * @return
 	 */
-	private CalendarEvent generateEvent() {
+	private CalendarEventEdit generateEvent() {
 		
 		MockCalendarEventEdit edit = new MockCalendarEventEdit();
 		
@@ -216,7 +242,7 @@ public class ExternalCalendaringServiceTest {
 		edit.setDescription(DESCRIPTION);
 		edit.setId(generateUUID());
 		edit.setCreator(CREATOR);
-
+		
 		TimeService timeService = new MockTimeService();
 		Time start = timeService.newTime(START_TIME);
 		Time end = timeService.newTime(END_TIME);

@@ -14,6 +14,7 @@ import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.time.api.TimeRange;
+import org.sakaiproject.util.BaseResourcePropertiesEdit;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -35,9 +36,15 @@ public class MockCalendarEventEdit implements CalendarEventEdit {
 	private String descriptionFormatted;
 	private String modifiedBy;
 	private String reference;
+	protected ResourcePropertiesEdit m_properties;
 	
 	
-	/* anything below here is not used at this stage */
+	/* mocked out methods. Note that some don't do anything so you need to check that. */
+	
+	public MockCalendarEventEdit() {
+		m_properties = new BaseResourcePropertiesEdit();
+	}
+	
 	
 	@Override
 	public EventAccess getAccess() {
@@ -45,8 +52,8 @@ public class MockCalendarEventEdit implements CalendarEventEdit {
 	}
 
 	@Override
-	public String getField(String arg0) {
-		return null;
+	public String getField(String name) {
+		return m_properties.getPropertyFormatted(name);
 	}
 
 	@Override
@@ -139,7 +146,13 @@ public class MockCalendarEventEdit implements CalendarEventEdit {
 	}
 
 	@Override
-	public void setField(String arg0, String arg1) {		
+	public void setField(String name, String value) {	
+		if (value == null){
+			m_properties.removeProperty(name);
+		}
+		else {
+			m_properties.addProperty(name, value);
+		}
 	}
 
 	@Override
@@ -157,6 +170,18 @@ public class MockCalendarEventEdit implements CalendarEventEdit {
 	
 	public void setCreator(String creatorUuid) {
 		this.creator=creatorUuid;
+	}
+
+	@Override
+	public String getReference() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getUrl() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

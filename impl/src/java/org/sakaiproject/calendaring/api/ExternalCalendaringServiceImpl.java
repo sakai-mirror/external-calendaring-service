@@ -30,6 +30,7 @@ import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
 
+import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.calendar.api.CalendarEvent;
 import org.sakaiproject.calendaring.logic.SakaiProxy;
 import org.sakaiproject.time.api.TimeRange;
@@ -74,7 +75,14 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		vevent.getProperties().add(tz.getTimeZoneId());
 		
 		//add uid to event
-		vevent.getProperties().add(new Uid(event.getId()));
+		//could come from the vevent_uuid field in the calendar event, otherwise from event ID.
+		String uuid = null;
+		if(StringUtils.isNotBlank(event.getField("vevent_uuid"))) {
+			uuid = event.getField("vevent_uuid");
+		} else {
+			uuid = event.getId();
+		}		
+		vevent.getProperties().add(new Uid(uuid));
 			
 		//add description to event
 		vevent.getProperties().add(new Description(event.getDescription()));
