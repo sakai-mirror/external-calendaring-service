@@ -107,8 +107,9 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 			}
 		}
 		
-		//log.debug("VEvent:" + vevent);
-		System.out.println("VEvent:" + vevent);
+		if(log.isDebugEnabled()){
+			log.debug("VEvent:" + vevent);
+		}
 		
 		return vevent;
 	}
@@ -134,8 +135,9 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 			return null;
 		}
 		
-		//log.debug("Calendar:" + calendar);
-		System.out.println("Calendar:" + calendar);
+		if(log.isDebugEnabled()){
+			log.debug("Calendar:" + calendar);
+		}
 		
 		return calendar;
 		

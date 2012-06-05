@@ -106,6 +106,10 @@ public class ExternalCalendaringServiceTest {
 		//create vevent
 		net.fortuna.ical4j.model.component.VEvent vevent = service.createEvent(event);
 		
+		System.out.println("testGeneratingVEvent");
+		System.out.println("####################");
+		System.out.println(vevent);
+		
 		Assert.assertNotNull(vevent);
 		
 		//TODO check the attributes of the vevent
@@ -125,6 +129,10 @@ public class ExternalCalendaringServiceTest {
 		
 		//create vevent
 		net.fortuna.ical4j.model.component.VEvent vevent = service.createEvent(event);
+		
+		System.out.println("testGeneratingVEventWithOverridenUuid");
+		System.out.println("#####################################");
+		System.out.println(vevent);
 		
 		Assert.assertNotNull(vevent);
 		
@@ -146,6 +154,10 @@ public class ExternalCalendaringServiceTest {
 		
 		//create vevent
 		net.fortuna.ical4j.model.component.VEvent vevent = service.createEvent(event, users);
+		
+		System.out.println("testGeneratingVEventWithAttendees");
+		System.out.println("#################################");
+		System.out.println(vevent);
 		
 		Assert.assertNotNull(vevent);
 		
@@ -172,6 +184,10 @@ public class ExternalCalendaringServiceTest {
 		//create calendar from vevent
 		net.fortuna.ical4j.model.Calendar calendar = service.createCalendar(Collections.singletonList(vevent));
 		
+		System.out.println("testGeneratingCalendar");
+		System.out.println("######################");
+		System.out.println(calendar);
+		
 		Assert.assertNotNull(calendar);
 		
 		//check attributes of the ical4j calendar are what we expect and match those in the event
@@ -195,6 +211,10 @@ public class ExternalCalendaringServiceTest {
 		
 		//create calendar from vevent
 		net.fortuna.ical4j.model.Calendar calendar = service.createCalendar(vevents);
+		
+		System.out.println("testGeneratingCalendarWithMultipleVEvents");
+		System.out.println("#########################################");
+		System.out.println(calendar);
 		
 		Assert.assertNotNull(calendar);
 		
@@ -220,6 +240,11 @@ public class ExternalCalendaringServiceTest {
 		net.fortuna.ical4j.model.Calendar calendar = service.createCalendar(Collections.singletonList(vevent));
 				
 		String path = service.toFile(calendar);
+		
+		System.out.println("testCreatingFile");
+		System.out.println("################");
+		System.out.println(path);
+		
 		Assert.assertNotNull(path);
 		
 		//now see if the file actually exists
