@@ -8,6 +8,7 @@ import java.net.URI;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.UUID;
 
 import lombok.Setter;
 import lombok.extern.apachecommons.CommonsLog;
@@ -148,7 +149,7 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	 */
 	public String toFile(Calendar calendar) {
 		
-		String path = generateFilePath(String.valueOf(new Date().getTime()));
+		String path = generateFilePath(UUID.randomUUID().toString());
 		
 		FileOutputStream fout;
 		try {
@@ -169,7 +170,7 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+ 
 		return path;
 		
 	}
@@ -224,8 +225,15 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	 */
 	private String generateFilePath(String filename) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(sakaiProxy.getCalendarFilePath());
-		sb.append(File.separator);
+		
+		String base = sakaiProxy.getCalendarFilePath();
+		sb.append(base);
+		
+		//add slash if reqd
+		if(!StringUtils.endsWith(base, File.separator)) {
+			sb.append(File.separator);
+		}
+		
 		sb.append(filename);
 		sb.append(".ics");
 		return sb.toString();

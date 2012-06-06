@@ -3,17 +3,14 @@ package org.sakaiproject.calendaring;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
 
-import lombok.Setter;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Version;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.sakaiproject.calendar.api.CalendarEvent;
 import org.sakaiproject.calendar.api.CalendarEventEdit;
 import org.sakaiproject.calendaring.api.ExternalCalendaringService;
-import org.sakaiproject.calendaring.api.ExternalCalendaringServiceImpl;
 import org.sakaiproject.calendaring.mocks.MockCalendarEventEdit;
 import org.sakaiproject.calendaring.mocks.MockTimeService;
 import org.sakaiproject.time.api.Time;
@@ -265,7 +261,7 @@ public class ExternalCalendaringServiceTest {
 		edit.setDisplayName(EVENT_NAME);
 		edit.setLocation(LOCATION);
 		edit.setDescription(DESCRIPTION);
-		edit.setId(generateUUID());
+		edit.setId(UUID.randomUUID().toString());
 		edit.setCreator(CREATOR);
 		
 		TimeService timeService = new MockTimeService();
@@ -300,14 +296,6 @@ public class ExternalCalendaringServiceTest {
 		}
 		
 		return users;
-	}
-	
-	/**
-	 * Helper to generate a UUID
-	 * @return
-	 */
-	private String generateUUID() {
-		return UUID.randomUUID().toString();
 	}
 	
 }

@@ -50,7 +50,7 @@ public interface ExternalCalendaringService {
 	public Calendar createCalendar(List<VEvent> events);
 	
 	/**
-	 * Write an iCal calendar out to a file in the filesystem.
+	 * Write an iCal calendar out to a file in the filesystem and return the path.
 	 * @param calendar iCal calendar object
 	 * @return the path to the file
 	 */
