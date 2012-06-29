@@ -28,6 +28,7 @@ import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Description;
 import net.fortuna.ical4j.model.property.Location;
 import net.fortuna.ical4j.model.property.ProdId;
+import net.fortuna.ical4j.model.property.Status;
 import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
 
@@ -115,6 +116,19 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		return vevent;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public VEvent cancelEvent(VEvent vevent) {
+		vevent.getProperties().add(new Status("CANCELLED"));
+		
+		if(log.isDebugEnabled()){
+			log.debug("VEvent cancelled:" + vevent);
+		}
+		
+		return vevent;
+		
+	}
 	
 	
 	/**

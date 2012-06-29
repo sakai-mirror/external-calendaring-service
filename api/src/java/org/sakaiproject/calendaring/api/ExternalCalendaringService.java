@@ -42,6 +42,15 @@ public interface ExternalCalendaringService {
 	public VEvent createEvent(CalendarEvent event, List<User> attendees);
 	
 	/**
+	 * Set the status of an existing vevent to cancelled.
+	 * This must then be turned into a Calendar before it can be turned into an ICS file.
+	 * 
+	 * @param vevent The VEvent to cancel
+	 * @return the updated VEvent
+	 */
+	public VEvent cancelEvent(VEvent vevent);
+	
+	/**
 	 * Creates an iCal calendar from a list of VEvents.
 	 * 
 	 * @param events iCal VEvents
