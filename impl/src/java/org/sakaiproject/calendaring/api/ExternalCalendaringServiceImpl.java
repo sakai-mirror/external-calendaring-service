@@ -93,10 +93,12 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		vevent.getProperties().add(new Location(event.getLocation()));
 		
 		//add organiser to event
-		Attendee creator = new Attendee(URI.create("mailto:" + sakaiProxy.getUserEmail(event.getCreator())));
-		creator.getParameters().add(Role.CHAIR);
-		creator.getParameters().add(new Cn(sakaiProxy.getUserDisplayName(event.getCreator())));
-		vevent.getProperties().add(creator);
+		if(StringUtils.isNotBlank(event.getCreator())) {
+			Attendee creator = new Attendee(URI.create("mailto:" + sakaiProxy.getUserEmail(event.getCreator())));
+			creator.getParameters().add(Role.CHAIR);
+			creator.getParameters().add(new Cn(sakaiProxy.getUserDisplayName(event.getCreator())));
+			vevent.getProperties().add(creator);
+		}
 		
 		//add attendees to event with 'required participant' role
 		if(attendees != null){

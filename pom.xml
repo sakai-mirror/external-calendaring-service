@@ -144,6 +144,12 @@
         </site>
     </distributionManagement>
     
+     <scm>
+    	<connection>scm:svn:https://source.sakaiproject.org/contrib/external-calendaring-service/trunk</connection>
+    	<developerConnection>scm:svn:https://source.sakaiproject.org/contrib/external-calendaring-service/trunk</developerConnection>
+    	<url>https://source.sakaiproject.org/contrib/external-calendaring-service/trunk</url>
+  	</scm>
+    
   	<modules>
     	<module>api</module>
     	<module>impl</module>

@@ -3,6 +3,7 @@ package org.sakaiproject.calendaring.logic;
 import lombok.Setter;
 import lombok.extern.apachecommons.CommonsLog;
 
+import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.tool.api.SessionManager;
@@ -50,26 +51,30 @@ public class SakaiProxyImpl implements SakaiProxy {
  	* {@inheritDoc}
  	*/
 	public String getUserEmail(String uuid) {
-		String email = null;
-		try {
-			email = userDirectoryService.getUser(uuid).getEmail();
-		} catch (UserNotDefinedException e) {
-			log.warn("Cannot get email for id: " + uuid + " : " + e.getClass() + " : " + e.getMessage());
+		
+		if(StringUtils.isNotBlank(uuid)){
+			try {
+				return userDirectoryService.getUser(uuid).getEmail();
+			} catch (UserNotDefinedException e) {
+				log.warn("Cannot get email for id: " + uuid + " : " + e.getClass() + " : " + e.getMessage());
+			}
 		}
-		return email;
+		return null;
 	}
 	
 	/**
  	* {@inheritDoc}
  	*/
 	public String getUserDisplayName(String uuid) {
-	   String name = null;
-		try {
-			name = userDirectoryService.getUser(uuid).getDisplayName();
-		} catch (UserNotDefinedException e) {
-			log.warn("Cannot get displayname for id: " + uuid + " : " + e.getClass() + " : " + e.getMessage());
+		
+		if(StringUtils.isNotBlank(uuid)){
+			try {
+				return userDirectoryService.getUser(uuid).getDisplayName();
+			} catch (UserNotDefinedException e) {
+				log.warn("Cannot get displayname for id: " + uuid + " : " + e.getClass() + " : " + e.getMessage());
+			}
 		}
-		return name;
+		return null;
 	}
 	
 	
