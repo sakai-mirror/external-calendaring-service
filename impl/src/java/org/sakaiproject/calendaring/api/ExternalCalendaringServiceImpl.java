@@ -101,6 +101,21 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		}
 		
 		//add attendees to event with 'required participant' role
+		vevent = addAttendeesToEvent(vevent, attendees);
+		
+		if(log.isDebugEnabled()){
+			log.debug("VEvent:" + vevent);
+		}
+		
+		return vevent;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public VEvent addAttendeesToEvent(VEvent vevent, List<User> attendees) {
+		
+		//add attendees to event with 'required participant' role
 		if(attendees != null){
 			for(User u: attendees) {
 				Attendee a = new Attendee(URI.create("mailto:" + u.getEmail()));
@@ -112,7 +127,7 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		}
 		
 		if(log.isDebugEnabled()){
-			log.debug("VEvent:" + vevent);
+			log.debug("VEvent with attendees:" + vevent);
 		}
 		
 		return vevent;

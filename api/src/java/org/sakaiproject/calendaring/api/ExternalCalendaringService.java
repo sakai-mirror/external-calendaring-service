@@ -36,13 +36,23 @@ public interface ExternalCalendaringService {
 	 * If the CalendarEvent has the field 'vevent_uuid', that will be used as the UUID of the VEvent preferentially.
 	 * 
 	 * @param event Sakai CalendarEvent
-	 * @param attendees list of Users that have been invited to hte event
+	 * @param attendees list of Users that have been invited to the event
 	 * @return the VEvent for the given event or null if there was an error
 	 */
 	public VEvent createEvent(CalendarEvent event, List<User> attendees);
 	
 	/**
-	 * Set the status of an existing vevent to cancelled.
+	 * Adds a list of attendees to an existing VEvent.
+	 * This must then be turned into a Calendar before it can be turned into an ICS file. 
+	 * 
+	 * @param vevent  The VEvent to add the attendess too
+	 * @param attendees list of Users that have been invited to the event
+	 * @return
+	 */
+	public VEvent addAttendeesToEvent(VEvent vevent, List<User> attendees);
+	
+	/**
+	 * Set the status of an existing VEvent to cancelled.
 	 * This must then be turned into a Calendar before it can be turned into an ICS file.
 	 * 
 	 * @param vevent The VEvent to cancel

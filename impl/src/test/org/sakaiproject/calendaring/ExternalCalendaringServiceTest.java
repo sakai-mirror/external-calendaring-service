@@ -167,6 +167,34 @@ public class ExternalCalendaringServiceTest {
 	}
 	
 	@Test
+	public void testUpdatingVEventWithAttendees() {
+		
+		//generate new event
+		CalendarEvent event = generateEvent();
+		
+		//create vevent
+		net.fortuna.ical4j.model.component.VEvent vevent = service.createEvent(event);
+		
+		System.out.println("testUpdatingVEventWithAttendees");
+		System.out.println("#################################");
+		System.out.println("Before:");
+		System.out.println(vevent);
+		
+		net.fortuna.ical4j.model.component.VEvent veventUpdated = service.addAttendeesToEvent(vevent, users);
+		System.out.println("After:");
+		System.out.println(vevent);
+		
+		Assert.assertNotNull(vevent);
+		
+		//TODO check the attributes of the vevent
+		//Assert.assertEquals(EVENT_NAME, vevent.getProperty("SUMMARY"));
+		//Assert.assertEquals(LOCATION, vevent.getProperty("LOCATION"));
+		
+		//TODO check attendees
+		
+	}
+	
+	@Test
 	public void testCancellingVEvent() {
 		
 		//generate new event
