@@ -8,7 +8,7 @@
 	<artifactId>external-calendaring-service</artifactId>
 	
 	<packaging>pom</packaging>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	
 	<parent>
 		<groupId>org.sakaiproject.purepoms</groupId>
@@ -138,9 +138,9 @@
     </distributionManagement>
     
      <scm>
-    	<connection>scm:svn:https://source.sakaiproject.org/contrib/external-calendaring-service/trunk</connection>
-    	<developerConnection>scm:svn:https://source.sakaiproject.org/contrib/external-calendaring-service/trunk</developerConnection>
-    	<url>https://source.sakaiproject.org/contrib/external-calendaring-service/trunk</url>
+    	<connection>scm:svn:https://source.sakaiproject.org/contrib/external-calendaring-service/tags/external-calendaring-service-1.0.1</connection>
+    	<developerConnection>scm:svn:https://source.sakaiproject.org/contrib/external-calendaring-service/tags/external-calendaring-service-1.0.1</developerConnection>
+    	<url>https://source.sakaiproject.org/contrib/external-calendaring-service/tags/external-calendaring-service-1.0.1</url>
   	</scm>
     
   	<modules>
