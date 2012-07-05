@@ -5,7 +5,7 @@
 	
 	<name>External Calendaring Service :: Assembly</name>
 	<groupId>org.sakaiproject.calendaring</groupId>
-	<artifactId>external-calendaring-service-assemply</artifactId>
+	<artifactId>external-calendaring-service-assembly</artifactId>
 	
 	<packaging>pom</packaging>
 	
