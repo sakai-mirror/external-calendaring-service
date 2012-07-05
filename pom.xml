@@ -147,6 +147,7 @@
     	<module>api</module>
     	<module>impl</module>
     	<module>pack</module>
+    	<module>assembly</module>
   	</modules>
   
 </project>
