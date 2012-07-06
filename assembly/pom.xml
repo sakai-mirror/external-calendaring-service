@@ -18,24 +18,36 @@
 	<dependencies>
 		<!-- all internal modules -->
 		<dependency>
-      			<groupId>org.sakaiproject.calendaring</groupId>
-      			<artifactId>external-calendaring-service-api</artifactId>
-      			<version>${project.version}</version>
-      			<scope>compile</scope>
-    		</dependency>
-    		<dependency>
-      			<groupId>org.sakaiproject.calendaring</groupId>
-      			<artifactId>external-calendaring-service-impl</artifactId>
-      			<version>${project.version}</version>
-      			<scope>compile</scope>
-    		</dependency>
-    		<dependency>
-    			<groupId>org.sakaiproject.calendaring</groupId>
-				<artifactId>external-calendaring-service-pack</artifactId>
-    			<version>${project.version}</version>
-      			<scope>compile</scope>
-    		    <type>war</type>
-    		</dependency>
+			<groupId>org.sakaiproject.calendaring</groupId>
+			<artifactId>external-calendaring-service-api</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+   		</dependency>
+   		<dependency>
+			<groupId>org.sakaiproject.calendaring</groupId>
+			<artifactId>external-calendaring-service-impl</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+   		</dependency>
+   		<dependency>
+   			<groupId>org.sakaiproject.calendaring</groupId>
+			<artifactId>external-calendaring-service-pack</artifactId>
+   			<version>${project.version}</version>
+			<scope>compile</scope>
+   		    <type>war</type>
+   		</dependency>
+    		
+    	<!-- additional required dependencies -->
+    	<dependency>
+			<groupId>org.mnode.ical4j</groupId>
+			<artifactId>ical4j</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>backport-util-concurrent</groupId>
+			<artifactId>backport-util-concurrent</artifactId>
+			<scope>compile</scope>
+		</dependency>
    		
 	</dependencies>
 	<build>

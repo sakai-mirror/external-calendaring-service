@@ -69,6 +69,13 @@
       			<artifactId>ical4j</artifactId>
       			<version>1.0.3</version>
     		</dependency>
+    		
+    		<!-- ical4j requires this, and it is deployed to shared/lib automatically via the assembly, along with ical4j -->
+    		<dependency>
+				<groupId>backport-util-concurrent</groupId>
+				<artifactId>backport-util-concurrent</artifactId>
+				<version>3.1</version>
+			</dependency>
 			
 			<!-- sakai dependencies not declared by parent -->
 			<dependency>
