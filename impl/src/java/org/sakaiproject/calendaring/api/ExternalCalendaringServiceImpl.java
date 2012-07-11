@@ -231,7 +231,7 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		
 		//setup calendar
 		Calendar calendar = new Calendar();
-		calendar.getProperties().add(new ProdId("-//"+serverName+"//iCal4j 1.0//EN"));
+		calendar.getProperties().add(new ProdId("-//"+serverName+"//Sakai External Calendaring Service//EN"));
 		calendar.getProperties().add(Version.VERSION_2_0);
 		calendar.getProperties().add(CalScale.GREGORIAN);
 		
