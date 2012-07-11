@@ -75,4 +75,12 @@ public interface ExternalCalendaringService {
 	 */
 	public String toFile(Calendar calendar);
 	
+	/**
+	 * Is the ICS service enabled? Tools can use this public method for test in their own UIs.
+	 * If this is disabled, nothing will be generated.
+	 * @return
+	 */
+	public boolean isIcsEnabled();
+	
+	
 }

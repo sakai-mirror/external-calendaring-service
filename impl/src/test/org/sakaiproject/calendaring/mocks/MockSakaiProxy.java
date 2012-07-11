@@ -41,4 +41,14 @@ public class MockSakaiProxy implements SakaiProxy {
 		return "User " + uuid;
 	}
 
+	@Override
+	public boolean isIcsEnabled() {
+		return true;
+	}
+
+	@Override
+	public boolean isCleanupEnabled() {
+		return true;
+	}
+
 }

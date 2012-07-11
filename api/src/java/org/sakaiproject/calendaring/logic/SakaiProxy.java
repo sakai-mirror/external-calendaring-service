@@ -27,7 +27,8 @@ public interface SakaiProxy {
 	public String getServerName();
 	
 	/**
-	 * Get the configured calendar file path on the server. This is where the ICS files are created. Must have trailing slash.
+	 * Get the configured calendar file path on the server. This is where the ICS files are created. 
+	 * Defaults to java.io.tmpdir if not provided
 	 * @return
 	 */
 	public String getCalendarFilePath();
@@ -45,4 +46,17 @@ public interface SakaiProxy {
 	 * @return
 	 */
 	public String getUserDisplayName(String uuid);
+	
+	/**
+	 * Is the ICS service enabled? If not, all operations will be no-ops. Defaults to true.
+	 * @return
+	 */
+	public boolean isIcsEnabled();
+	
+	/**
+	 * Is cleanup enabled? If so, generated files will be cleaned up (deleted via File.deleteOnExit()) when the JVM exits. 
+	 * Once a file has been generated and used it is no longer needed nor used again, so this defaults to true.
+	 * @return
+	 */
+	public boolean isCleanupEnabled();
 }

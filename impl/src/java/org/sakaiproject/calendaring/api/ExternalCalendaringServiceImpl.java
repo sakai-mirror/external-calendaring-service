@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
@@ -63,6 +62,11 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	 */
 	public VEvent createEvent(CalendarEvent event, List<User> attendees) {
 		
+		if(!isIcsEnabled()) {
+			log.debug("ExternalCalendaringService is disabled. Enable via calendar.ics.generation.enabled=true in sakai.properties");
+			return null;
+		}
+		
 		//timezone. All dates are in GMT so we need to explicitly set that
 		TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
 		TimeZone timezone = registry.getTimeZone("GMT");
@@ -117,6 +121,11 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	 */
 	public VEvent addAttendeesToEvent(VEvent vevent, List<User> attendees) {
 		
+		if(!isIcsEnabled()) {
+			log.debug("ExternalCalendaringService is disabled. Enable via calendar.ics.generation.enabled=true in sakai.properties");
+			return null;
+		}
+		
 		//add attendees to event with 'required participant' role
 		if(attendees != null){
 			for(User u: attendees) {
@@ -139,6 +148,12 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	 * {@inheritDoc}
 	 */
 	public VEvent cancelEvent(VEvent vevent) {
+		
+		if(!isIcsEnabled()) {
+			log.debug("ExternalCalendaringService is disabled. Enable via calendar.ics.generation.enabled=true in sakai.properties");
+			return null;
+		}
+		
 		vevent.getProperties().add(new Status("CANCELLED"));
 		
 		if(log.isDebugEnabled()){
@@ -154,6 +169,11 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	 * {@inheritDoc}
 	 */
 	public Calendar createCalendar(List<VEvent> events) {
+		
+		if(!isIcsEnabled()) {
+			log.debug("ExternalCalendaringService is disabled. Enable via calendar.ics.generation.enabled=true in sakai.properties");
+			return null;
+		}
 		
 		//setup calendar
 		Calendar calendar = setupCalendar();
@@ -188,6 +208,11 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	 */
 	public String toFile(Calendar calendar) {
 		
+		if(!isIcsEnabled()) {
+			log.debug("ExternalCalendaringService is disabled. Enable via calendar.ics.generation.enabled=true in sakai.properties");
+			return null;
+		}
+		
 		//null check
 		if(calendar == null) {
 			log.error("Calendar is null, cannot generate ICS file.");
@@ -196,9 +221,26 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		
 		String path = generateFilePath(UUID.randomUUID().toString());
 		
+		//test file
+		File file = new File(path);
+		try {
+			if(!file.createNewFile()) {
+				log.error("Couldn't write file to: " + path);
+				return null;	
+			}
+		} catch (IOException e) {
+			log.error("An error occurred trying to write file to: " + path + " : " + e.getClass() + " : " + e.getMessage());
+			return null;
+		}
+		
+		//if cleanup enabled, mark for deletion when the JVM exits.
+		if(sakaiProxy.isCleanupEnabled()) {
+			file.deleteOnExit();
+		}
+		
 		FileOutputStream fout;
 		try {
-			fout = new FileOutputStream(path);
+			fout = new FileOutputStream(file);
 		
 			CalendarOutputter outputter = new CalendarOutputter();
 			outputter.output(calendar, fout);
@@ -220,6 +262,12 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isIcsEnabled() {
+		return sakaiProxy.isIcsEnabled();
+	}
 	
 	/**
 	 * Helper method to setup the standard parts of the calendar

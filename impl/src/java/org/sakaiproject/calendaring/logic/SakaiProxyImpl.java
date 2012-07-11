@@ -1,5 +1,7 @@
 package org.sakaiproject.calendaring.logic;
 
+import java.io.File;
+
 import lombok.Setter;
 import lombok.extern.apachecommons.CommonsLog;
 
@@ -44,7 +46,12 @@ public class SakaiProxyImpl implements SakaiProxy {
  	* {@inheritDoc}
  	*/
 	public String getCalendarFilePath() {
-		return serverConfigurationService.getString("calendar.path", "/tmp/");
+		String path = serverConfigurationService.getString("calendar.ics.generation.path", System.getProperty("java.io.tmpdir"));
+		//ensure trailing slash
+		if(!StringUtils.endsWith(path, File.separator)) {
+			path = path + File.separator;
+		}
+		return path;
 	}
 	
 	/**
@@ -75,6 +82,20 @@ public class SakaiProxyImpl implements SakaiProxy {
 			}
 		}
 		return null;
+	}
+	
+	/**
+ 	* {@inheritDoc}
+ 	*/
+	public boolean isIcsEnabled() {
+		return serverConfigurationService.getBoolean("calendar.ics.generation.enabled", true);
+	}
+	
+	/**
+ 	* {@inheritDoc}
+ 	*/
+	public boolean isCleanupEnabled() {
+		return serverConfigurationService.getBoolean("calendar.ics.cleanup.enabled", true);
 	}
 	
 	
