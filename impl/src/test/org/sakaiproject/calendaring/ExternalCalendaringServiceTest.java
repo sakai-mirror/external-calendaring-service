@@ -275,6 +275,34 @@ public class ExternalCalendaringServiceTest {
 		
 	}
 	
+	@Test
+	public void testGeneratingCalendarWithNullList() {
+		
+		//create calendar with null
+		net.fortuna.ical4j.model.Calendar calendar = service.createCalendar(null);
+		
+		System.out.println("testGeneratingCalendarWithNullList");
+		System.out.println("##################################");
+		
+		//should be null
+		Assert.assertNull(calendar);
+				
+	}
+	
+	@Test
+	public void testGeneratingCalendarWithEmptyList() {
+		
+		//create calendar with null
+		net.fortuna.ical4j.model.Calendar calendar = service.createCalendar(Collections.EMPTY_LIST);
+		
+		System.out.println("testGeneratingCalendarWithEmptyList");
+		System.out.println("###################################");
+		
+		//should be null
+		Assert.assertNull(calendar);
+				
+	}
+	
 	
 	@Test
 	public void testCreatingFile() {

@@ -18,5 +18,6 @@
 	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/mock/sakai-mock/2.8.4/sakai-mock-2.8.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/kernel/sakai-kernel-api/1.4.0-SNAPSHOT/sakai-kernel-api-1.4.0-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/kernel/sakai-component-manager/1.4.0-SNAPSHOT/sakai-component-manager-1.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

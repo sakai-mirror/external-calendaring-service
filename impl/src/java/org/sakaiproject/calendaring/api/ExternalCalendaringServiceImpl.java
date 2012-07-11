@@ -32,11 +32,13 @@ import net.fortuna.ical4j.model.property.Status;
 import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.calendar.api.CalendarEvent;
 import org.sakaiproject.calendaring.logic.SakaiProxy;
 import org.sakaiproject.time.api.TimeRange;
 import org.sakaiproject.user.api.User;
+
 
 
 
@@ -155,7 +157,13 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		
 		//setup calendar
 		Calendar calendar = setupCalendar();
-			
+		
+		//null check
+		if(CollectionUtils.isEmpty(events)) {
+			log.error("List of VEvents was null or empty, no calendar will be created.");
+			return null;
+		}
+		
 		//add vevents to calendar
 		calendar.getComponents().addAll(events);
 		
