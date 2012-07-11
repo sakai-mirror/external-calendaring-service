@@ -283,6 +283,8 @@ public class ExternalCalendaringServiceTest {
 		
 		System.out.println("testGeneratingCalendarWithNullList");
 		System.out.println("##################################");
+		System.out.println(calendar);
+		System.out.println("This should be null.");		
 		
 		//should be null
 		Assert.assertNull(calendar);
@@ -297,6 +299,8 @@ public class ExternalCalendaringServiceTest {
 		
 		System.out.println("testGeneratingCalendarWithEmptyList");
 		System.out.println("###################################");
+		System.out.println(calendar);
+		System.out.println("This should be null.");
 		
 		//should be null
 		Assert.assertNull(calendar);
@@ -320,7 +324,6 @@ public class ExternalCalendaringServiceTest {
 		
 		System.out.println("testCreatingFile");
 		System.out.println("################");
-		System.out.println(path);
 		
 		Assert.assertNotNull(path);
 		
@@ -328,6 +331,20 @@ public class ExternalCalendaringServiceTest {
 		File f = new File(path);
 		Assert.assertTrue(f.exists());
 		
+		
+	}
+	
+	@Test
+	public void testCreatingFileWithNullCalendar() {
+		
+		String path = service.toFile(null);
+		
+		System.out.println("testCreatingFileWithNullCalendar");
+		System.out.println("################################");
+		System.out.println(	path);
+		System.out.println("This should be null.");
+		
+		Assert.assertNull(path);
 		
 	}
 	

@@ -188,6 +188,12 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	 */
 	public String toFile(Calendar calendar) {
 		
+		//null check
+		if(calendar == null) {
+			log.error("Calendar is null, cannot generate ICS file.");
+			return null;
+		}
+		
 		String path = generateFilePath(UUID.randomUUID().toString());
 		
 		FileOutputStream fout;
