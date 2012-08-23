@@ -27,6 +27,7 @@ import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Description;
 import net.fortuna.ical4j.model.property.Location;
 import net.fortuna.ical4j.model.property.ProdId;
+import net.fortuna.ical4j.model.property.Sequence;
 import net.fortuna.ical4j.model.property.Status;
 import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
@@ -91,6 +92,14 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 			uuid = event.getId();
 		}		
 		vevent.getProperties().add(new Uid(uuid));
+		
+		//add sequence to event
+		//will come from the vevent_sequnece field in the calendar event, otherwise skip it
+		String sequence = null;
+		if(StringUtils.isNotBlank(event.getField("vevent_sequence"))) {
+			sequence = event.getField("vevent_sequence");
+			vevent.getProperties().add(new Sequence(sequence));
+		}
 			
 		//add description to event
 		vevent.getProperties().add(new Description(event.getDescription()));

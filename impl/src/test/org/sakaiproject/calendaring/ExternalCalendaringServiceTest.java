@@ -218,6 +218,50 @@ public class ExternalCalendaringServiceTest {
 		
 	}
 	
+	@Test
+	public void testCreatingVEventWithUidProperty() {
+		
+		//generate new event
+		CalendarEventEdit event = generateEvent();
+		
+		String uuid = UUID.randomUUID().toString();
+		event.setField("vevent_uuid", uuid);
+		
+		//create vevent
+		net.fortuna.ical4j.model.component.VEvent vevent = service.createEvent(event);
+		
+		System.out.println("testCreatingVEventWithUidProperty");
+		System.out.println("####################");
+		System.out.println(vevent);
+		
+		Assert.assertNotNull(vevent);
+		
+		//TODO check uid attribute matches what we set
+		
+	}
+	
+	@Test
+	public void testCreatingVEventWithSequenceProperty() {
+		
+		//generate new event
+		CalendarEventEdit event = generateEvent();
+		
+		String sequence = "12345";
+		event.setField("vevent_sequence", sequence);
+		
+		//create vevent
+		net.fortuna.ical4j.model.component.VEvent vevent = service.createEvent(event);
+		
+		System.out.println("testCreatingVEventWithSequenceProperty");
+		System.out.println("####################");
+		System.out.println(vevent);
+		
+		Assert.assertNotNull(vevent);
+		
+		//TODO check sequence attribute matches what we set
+		
+	}
+	
 	/**
 	 * Ensure we can get a ical4j Calendar from the generated event.
 	 */
