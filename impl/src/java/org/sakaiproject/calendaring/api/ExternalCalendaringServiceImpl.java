@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +31,7 @@ import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Sequence;
 import net.fortuna.ical4j.model.property.Status;
 import net.fortuna.ical4j.model.property.Uid;
+import net.fortuna.ical4j.model.property.Url;
 import net.fortuna.ical4j.model.property.Version;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -117,6 +119,19 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		
 		//add attendees to event with 'required participant' role
 		vevent = addAttendeesToEvent(vevent, attendees);
+		
+		//add URL to event, if present
+		String url = null;
+		if(StringUtils.isNotBlank(event.getField("vevent_url"))) {
+			url = event.getField("vevent_url");
+			Url u = new Url();
+			try {
+				u.setValue(url);
+				vevent.getProperties().add(u);
+			} catch (URISyntaxException e) {
+				//it doesnt matter, ignore it
+			}
+		}
 		
 		if(log.isDebugEnabled()){
 			log.debug("VEvent:" + vevent);

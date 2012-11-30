@@ -241,6 +241,28 @@ public class ExternalCalendaringServiceTest {
 	}
 	
 	@Test
+	public void testCreatingVEventWithUrlProperty() {
+		
+		//generate new event
+		CalendarEventEdit event = generateEvent();
+		
+		String uuid = UUID.randomUUID().toString();
+		event.setField("vevent_url", "http://www.fake.com");
+		
+		//create vevent
+		net.fortuna.ical4j.model.component.VEvent vevent = service.createEvent(event);
+		
+		System.out.println("testCreatingVEventWithUrlProperty");
+		System.out.println("####################");
+		System.out.println(vevent);
+		
+		Assert.assertNotNull(vevent);
+		
+		//TODO check uid attribute matches what we set
+		
+	}
+	
+	@Test
 	public void testCreatingVEventWithSequenceProperty() {
 		
 		//generate new event

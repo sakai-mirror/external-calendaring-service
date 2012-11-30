@@ -24,8 +24,9 @@ public interface ExternalCalendaringService {
 	 * Creates an iCal VEvent for a Sakai CalendarEvent.
 	 * This must then be turned into a Calendar before it can be turned into an ICS file.
 	 * 
-	 * If the CalendarEvent has the field 'vevent_uuid', that will be used as the UUID of the VEvent preferentially.
-	 * If the CalendarEvent has the field 'vevent_sequence', that will be used as the sequence of the VEvent preferentially.
+	 * <br>If the CalendarEvent has the field 'vevent_uuid', that will be used as the UUID of the VEvent preferentially.
+	 * <br>If the CalendarEvent has the field 'vevent_sequence', that will be used as the sequence of the VEvent preferentially.
+	 * <br>If the CalendarEvent has the field 'vevent_url', that will be added to the URL property of the VEvent.
 	 * 
 	 * @param event Sakai CalendarEvent
 	 * @return the VEvent for the given event or null if there was an error
@@ -36,8 +37,9 @@ public interface ExternalCalendaringService {
 	 * Creates an iCal VEvent for a Sakai CalendarEvent with the given attendees.
 	 * This must then be turned into a Calendar before it can be turned into an ICS file.
 	 * 
-	 * If the CalendarEvent has the field 'vevent_uuid', that will be used as the UUID of the VEvent preferentially.
-	 * If the CalendarEvent has the field 'vevent_sequence', that will be used as the sequence of the VEvent preferentially.
+	 * <br>If the CalendarEvent has the field 'vevent_uuid', that will be used as the UUID of the VEvent preferentially.
+	 * <br>If the CalendarEvent has the field 'vevent_sequence', that will be used as the sequence of the VEvent preferentially.
+	 * <br>If the CalendarEvent has the field 'vevent_url', that will be added to the URL property of the VEvent.
 	 * 
 	 * @param event Sakai CalendarEvent
 	 * @param attendees list of Users that have been invited to the event
