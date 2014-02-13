@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="org/sakaiproject/calendaring/tests/" kind="src" path="api/src/java"/>
+	<classpathentry excluding="org/sakaiproject/calendaring/tests/" kind="src" path="impl/src/java"/>
+	<classpathentry kind="src" path="impl/src/test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="var" path="M2_REPO/org/projectlombok/lombok/0.10.8/lombok-0.10.8.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/mnode/ical4j/ical4j/1.0.2/ical4j-1.0.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit/junit/4.8.2/junit-4.8.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/mockito/mockito-all/1.9.0/mockito-all-1.9.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring/2.5.6.SEC02/spring-2.5.6.SEC02.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-test/2.5.6.SEC01/spring-test-2.5.6.SEC01.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.5/commons-lang-2.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-calendar-api/2.8.0/sakai-calendar-api-2.8.0.jar"/>
+	<classpathentry kind="src" path="/kernel-trunk"/>
+	<classpathentry kind="var" path="M2_REPO/net/fortuna/ical4j/ical4j/1.0-rc3/ical4j-1.0-rc3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/mock/sakai-mock/2.8.4/sakai-mock-2.8.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/kernel/sakai-kernel-api/1.4.0-SNAPSHOT/sakai-kernel-api-1.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/kernel/sakai-component-manager/1.4.0-SNAPSHOT/sakai-component-manager-1.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
