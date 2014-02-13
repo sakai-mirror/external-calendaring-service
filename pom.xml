@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<name>External Calendaring Service</name>
+	<groupId>org.sakaiproject.calendaring</groupId>
+	<artifactId>external-calendaring-service</artifactId>
+	
+	<packaging>pom</packaging>
+	<version>1.0.6-SNAPSHOT</version>
+	
+	<parent>
+		<groupId>org.sakaiproject.purepoms</groupId>
+		<artifactId>sakai-standard-tool</artifactId>
+		<version>2.8.6</version>
+	</parent>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<developers>
+		<developer>
+			<name>Steve Swinsburg</name>
+			<email>steve.swinsburg@gmail.com</email>
+			<timezone>10</timezone>
+		</developer>
+	</developers>
+	
+	<dependencyManagement>
+		<dependencies>
+		
+			<!-- project dependencies -->
+			<dependency>
+      			<groupId>org.sakaiproject.calendaring</groupId>
+      			<artifactId>external-calendaring-service-api</artifactId>
+      			<version>${project.version}</version>
+      			<scope>provided</scope>
+    		</dependency>
+    		<dependency>
+      			<groupId>org.sakaiproject.calendaring</groupId>
+      			<artifactId>external-calendaring-service-impl</artifactId>
+      			<version>${project.version}</version>
+      			<scope>runtime</scope>
+    		</dependency>
+			
+			<!-- third party dependencies -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>0.11.0</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring</artifactId>
+				<version>2.5.6.SEC03</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.5</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>commons-collections</groupId>
+				<artifactId>commons-collections</artifactId>
+				<version>3.2.1</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+      			<groupId>org.mnode.ical4j</groupId>
+      			<artifactId>ical4j</artifactId>
+      			<version>1.0.3</version>
+    		</dependency>
+    		
+    		<!-- ical4j requires this, and it is deployed to shared/lib automatically via the assembly, along with ical4j -->
+    		<dependency>
+				<groupId>backport-util-concurrent</groupId>
+				<artifactId>backport-util-concurrent</artifactId>
+				<version>3.1</version>
+			</dependency>
+			
+			<!-- sakai dependencies not declared by parent -->
+			<dependency>
+				<groupId>org.sakaiproject</groupId>
+  				<artifactId>sakai-calendar-api</artifactId>
+            	<version>2.8.2</version>
+            	<scope>provided</scope>
+       	 	</dependency>
+       	 
+       	 	<!-- test dependencies -->
+       	 	<dependency>
+            	<groupId>junit</groupId>
+            	<artifactId>junit</artifactId>
+            	<version>4.4</version>
+            	<scope>test</scope>
+        	</dependency>
+    		<dependency>
+    			<groupId>org.sakaiproject.mock</groupId>
+    			<artifactId>sakai-mock</artifactId>
+   				<version>2.8.4</version>
+   				<scope>test</scope>
+    		</dependency>	
+    		<dependency>
+    			<groupId>org.springframework</groupId>
+    			<artifactId>spring-test</artifactId>
+   				<version>2.5.6.SEC03</version>
+   				<scope>test</scope>
+    		</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+	
+	
+	<repositories>
+		<repository>
+			<id>sakai-maven</id>
+			<name>Sakai Maven Repo</name>
+			<layout>default</layout>
+			<url>http://source.sakaiproject.org/maven2</url>
+			<releases>
+            </releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>Sakai Plugin Repo</id>
+			<url>http://source.sakaiproject.org/maven2</url>
+			<releases>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	
+	<!--  this is only currently setup for snapshot releases, no stable releases -->
+	<distributionManagement>
+        <site>
+            <id>sakai-site</id>
+            <name>Sakai release Site</name>
+            <url>scpexe://source.sakaiproject.org/var/www/html/release/external-calendaring-service/${project.version}</url>
+        </site>
+    </distributionManagement>
+    
+     <scm>
+    	<connection>scm:svn:https://source.sakaiproject.org/contrib/external-calendaring-service/trunk</connection>
+    	<developerConnection>scm:svn:https://source.sakaiproject.org/contrib/external-calendaring-service/trunk</developerConnection>
+    	<url>https://source.sakaiproject.org/contrib/external-calendaring-service/trunk</url>
+  	</scm>
+    
+  	<modules>
+    	<module>api</module>
+    	<module>impl</module>
+    	<module>pack</module>
+    	<module>assembly</module>
+  	</modules>
+  
+</project>
